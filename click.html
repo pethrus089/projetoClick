@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click</title>
+</head>
+
+<body>
+    <div class="fundoFigura">
+        <div class="fundo">
+            <div class="p">
+                <div id="sombra">
+                    <img id="click" src="icons8-click-40.png" alt="">
+                </div>
+                <p id="resposta"></p>
+            </div>
+        </div>
+    </div>
+    <style>
+        body {
+            background-color: rgba(138, 215, 189, 0.664);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .fundo {
+            width: 200px;
+            height: 200px;
+            background-color: rgba(0, 0, 255, 0.632);
+            border-radius: 15px;
+            box-shadow: 5px 5px 10px #888;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .p{
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sombra {
+            max-width: 20px;
+            background-color: #f77d4dde;
+            border-radius: 50px;
+            padding: 5px;
+            box-shadow:
+                -5px -5px 10px rgba(0, 0, 0, 0.5),
+                5px 5px 10px rgba(0, 0, 0, 0.5);
+                display: inline-table;
+        }
+    </style>
+    <script>
+        let referencia = 0;
+         //////////////////////////////////efeito do butao
+        document.addEventListener('DOMContentLoaded', function () {
+            var click = document.getElementById('click');
+            var sombra = document.getElementById('sombra');
+
+            click.addEventListener('click', function () {
+                referencia=1;
+                sombra.classList.add('sombra');
+                MandaPorAjax(referencia);
+                setTimeout(function () {
+                    sombra.classList.remove('sombra');
+                }, 200);
+
+            });
+        });
+        /////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////ajax
+        function MandaPorAjax(num) {
+            var requisicao = new XMLHttpRequest();
+            requisicao.onreadystatechange = function () {
+                if (requisicao.readyState === 4 && requisicao.status === 200) {
+                    console.log('Deu errado !!!')
+                } else {
+                    respostaRequisicao(requisicao.responseText)
+                }
+            }
+            var url = "pegaClick.php?qt="+num;
+            requisicao.open("GET", url, true);
+            requisicao.send();
+
+        }
+
+        function respostaRequisicao(text) {
+            var resposta = document.getElementById('resposta')
+            resposta.innerText = text
+        }
+        ////////////////////////////////////////////////
+
+        ///chama no onload para que a quantidade ja seja informada.
+        window.onload = MandaPorAjax(referencia);
+    </script>
+</body>
+
+</html>
